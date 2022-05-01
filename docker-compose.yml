@@ -1,21 +1,9 @@
 version: '3.8'
 services:
   db:
-    image: mysql:8.0
-    cap_add:
-      - SYS_NICE
     restart: always
-    environment:
-      - MYSQL_DATABASE=poc
-      - MYSQL_ROOT_PASSWORD=password
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '3306:3306'
-    volumes:
-      - db:/var/lib/mysql
-      - ./db/000-create_animes_table.sql:/docker-entrypoint-initdb.d/000-create_animes_table.sql
-      - ./db/001-populate_animes_table.sql:/docker-entrypoint-initdb.d/001-populate_animes_table.sql
-      - ./db/animes.csv:/tmp/animes.csv
-    command: --secure_file_priv=/tmp
-volumes:
-  db:
-    driver: local
